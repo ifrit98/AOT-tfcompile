@@ -1,4 +1,8 @@
-### 0. Setup workspace
+### Tensorfow AOT (Ahead of Time) compilation minimal example
+- This is a simple tutorial to get to a final binary calling a tensorflow graph that has been frozen
+-- NOTE: you may need to convert variables to constants in your model/graph, in which case use tensorflow/python/tools/freeze_graph.py
+
+#### 0. Setup workspace
 ```{bash}
 export HOME=/home/localdrive
 cd ~
@@ -82,17 +86,6 @@ tf_library(
 ```{bash}
 bazel build :test_graph_matmul
 ```
- # ERROR: Complex types not supported.  Can be built successfully without adding bitcast lines.
- - ERROR: /home/localdrive/tfcompile/tensorflow/tensorflow/BUILD:937:1: Executing genrule //tensorflow:gen_test_graph_tfmatmul failed (Aborted): bash failed: error executing command /bin/bash -c ... (remaining 1 argument(s) skipped)
-2020-02-20 16:02:47.044505: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA
-2020-02-20 16:02:47.044891: F tensorflow/compiler/aot/tfcompile_main.cc:175] Non-OK-status: status status: Unimplemented: Complex types not supported.
-	 [[{{node Bitcast}}]]
-/bin/bash: line 1:  1874 Aborted                 (core dumped) CUDA_VISIBLE_DEVICES='' bazel-out/host/bin/tensorflow/compiler/aot/tfcompile --graph=tensorflow/test_graph_tfmatmul.pb --config=tensorflow/test_graph_tfmatmul.config.pbtxt --entry_point=__xla_tensorflow__test_graph_tfmatmul --cpp_class=foo::bar::MatMulComp --target_triple=x86_64-pc-linux --out_header=bazel-out/k8-opt/bin/tensorflow/test_graph_tfmatmul.h --out_metadata_object=bazel-out/k8-opt/bin/tensorflow/test_graph_tfmatmul_tfcompile_metadata.o --out_function_object=bazel-out/k8-opt/bin/tensorflow/test_graph_tfmatmul_tfcompile_function.o
-Target //tensorflow:test_graph_tfmatmul failed to build
-Use --verbose_failures to see the command lines of failed build steps.
-INFO: Elapsed time: 0.338s, Critical Path: 0.18s
-INFO: 4 processes: 4 local.
-FAILED: Build did NOT complete successfully
 
 
 #### 5. Move generated C++ header test_graph_tfmatmul.h and write C++ code to invoke graph
