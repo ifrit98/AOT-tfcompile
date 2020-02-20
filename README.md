@@ -1,6 +1,6 @@
 ### Tensorfow AOT (Ahead of Time) compilation minimal example
 - This is a simple tutorial to get to a final binary calling a tensorflow graph that has been frozen
-- NOTE: you may need to convert variables to constants in your model/graph, in which case use tensorflow/python/tools/freeze_graph.py
+- NOTE: you may need to convert variables to constants in your model/graph, in which case use `tensorflow/python/tools/freeze_graph.py`
 
 #### 0. Setup workspace
 ```{bash}
