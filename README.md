@@ -9,21 +9,13 @@ mkdir tfcompile && cd tfcompile
 git clone https://github.com/tensorflow/tensorflow.git
 git checkout r2.1 # master branch just broke bazel (https://github.com/tensorflow/tensorflow/commit/09fe958feebec0405ccac225c94fc130304fc2f4)
 ```
-#### 2. Edit and create test graph # In this case test_graph_tfmatmul.pb
-  - 2a. Add bitcast to minimal example graph to check for TFCOMPLEX64 support
-    nano tensorflow/tensorflow/compiler/aot/tests/make_test_graphs.py
-    ``` 
-    # add in import section
-      from tensorflow import bitcast, complex64
-    # add after line 111 in `tfmatmul()`
-      x = bitcast(x, complex64)
-      y = bitcast(y, complex64)
-    ```
-  2b. Run script to generate graph and move to //tensorflow/tensorflow
-    python tensorflow/tensorflow/compiler/aot/tests/make_test_graphs.py
-    mv test_graph_tfmatmul.pb tensorflow/tensorflow/
-  ##### NOTE: this errors out with an `Object was never used` message, but all graphs 
-  ##### should have been created properly in cwd or `--out_dir` if specified
+#### 2. Create test graph with make_test_graphs.py and move to //tensorflow/tensorflow
+```
+python tensorflow/tensorflow/compiler/aot/tests/make_test_graphs.py
+mv test_graph_tfmatmul.pb tensorflow/tensorflow/
+```
+##### NOTE: this may error out with an `Object was never used` message, but all graphs 
+##### should have been created properly in cwd or `--out_dir` if specified
 
 #### 3. Prepare protobuf config file
 cd tensorflow/tensorflow # must be in tensorflow inner workspace 
